@@ -1,0 +1,24 @@
+{
+  "name": "realtimepoll",
+  "version": "1.0.0",
+  "description": "Real Time Poll Web Site made with JavaScript ♥",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OguzhanUmutlu/RealTimePoll.git"
+  },
+  "keywords": [],
+  "author": "OguzhanUmutlu",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/OguzhanUmutlu/RealTimePoll/issues"
+  },
+  "homepage": "https://github.com/OguzhanUmutlu/RealTimePoll#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "fs": "^0.0.1-security"
+  }
+}
