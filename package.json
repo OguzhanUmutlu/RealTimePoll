@@ -19,6 +19,7 @@
   "homepage": "https://github.com/OguzhanUmutlu/RealTimePoll#readme",
   "dependencies": {
     "express": "^4.17.1",
-    "fs": "^0.0.1-security"
+    "fs": "^0.0.1-security",
+    "request": "^2.88.2"
   }
 }
