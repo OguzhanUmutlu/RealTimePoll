@@ -1,0 +1,83 @@
+<html lang="en">
+<head>
+    <title>Create poll</title>
+</head>
+<body>
+<h1>{title}</h1>
+<hr>
+<div id="options"></div>
+<button type="button" onclick="clearOption();">Clear</button>
+<script>
+    let pollId = "{pollId}"*1;
+    let options = JSON.parse(`{options}`);
+    options.forEach((v, k)=> {
+        document.getElementById("options").innerHTML += `<input class="option" value="${v}" type="button" id="optionValue${k+1}" onclick="selectOption(${k+1});"> <span id="voteAmount${k+1}">0 Votes (%0)</span><br><br>`
+    });
+    function selectOption(option) {
+        let request = new XMLHttpRequest();
+        request.open("get", "/api?type=addVote&id="+pollId+"&option="+option);
+        request.onreadystatechange = () => {
+            if (request.readyState !== 4) return;
+            if (request.status === 200) {
+                let data = JSON.parse(request.responseText);
+                if(data.error)
+                    alert(data.error);
+            }
+        }
+        request.send();
+    }
+    function clearOption() {
+        let request = new XMLHttpRequest();
+        request.open("get", "/api?type=clearVote&id="+pollId);
+        request.onreadystatechange = () => {
+            if (request.readyState !== 4) return;
+            if (request.status === 200) {
+                let data = JSON.parse(request.responseText);
+                if(data.error)
+                    alert(data.error);
+            }
+        }
+        request.send();
+    }
+    let votes;
+    function repeat() {
+        let request = new XMLHttpRequest();
+        request.open("get", "/api?type=pollVotes&id="+pollId);
+        request.onreadystatechange = () => {
+            if (request.readyState !== 4) return;
+            if (request.status === 200) {
+                let data = JSON.parse(request.responseText);
+                if(data.error)
+                    alert(data.error);
+                else {
+                    votes = data.result;
+                    let totalVotes = Object.values(votes).length < 1 ? 0 : Object.values(votes).reduce((a,b)=>a+b);
+                    options.forEach((v, k) => {
+                        let amount = votes[k+1] || 0;
+                        document.getElementById("voteAmount"+(k+1)).innerHTML = amount + " Votes (%" + (Math.floor(amount/totalVotes*100) || 0) + ")";
+                    });
+                }
+                setTimeout(repeat, 500);
+            }
+        }
+        request.send();
+    }
+    repeat();
+</script>
+<style>
+    * {
+        font-family: Calibri, serif;
+    }
+    .option {
+        display: block;
+        width: 75%;
+        border: none;
+        background-color: rgba(237, 255, 0, 0.75);
+        padding: 14px 28px;
+        font-size: 16px;
+        cursor: pointer;
+        text-align: center;
+    }
+</style>
+</body>
+</html>

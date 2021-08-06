@@ -1,0 +1,48 @@
+<html>
+<head>
+    <title>Create poll</title>
+</head>
+<body>
+<form method="post" id="poll">
+    <label>
+        <input type="text" id="titleOption" placeholder="Enter title here..." name="title">
+    </label>
+    <hr>
+    <div id="options">
+    </div>
+    <button type="button" onclick="addOption()">
+        Add option
+    </button> <button type="button" onclick="validate();">Submit</button>
+</form>
+<script>
+    let options = {};
+    addOption();addOption();
+    function validate() {
+        if(!document.getElementById("titleOption").value) return alert("Title should be filled!");
+        if(Object.keys(options).some(i=> !document.getElementById("optionValue"+i).value)) return alert("Your all options should be filled!");
+        document.forms["poll"].submit();
+    }
+    function addOption() {
+        if(Object.keys(options).length >= 15) return alert("You can create maximum 15 options!");
+        let id = (Object.keys(options).sort(function(a, b){return a-b}).reverse()[0]*1 || 0)+1;
+        let a = document.getElementById("options").innerHTML || "";
+        a+=`<label id="option${id}">
+            <input type="text" placeholder="Enter answer here..." name="option${id}" id="optionValue${id}">
+            Remove <input type="checkbox" onclick="removeOption(${id});">
+        <br></label>`;
+        document.getElementById("options").innerHTML = a;
+        options[id] = true;
+    }
+    function removeOption(option) {
+        if(Object.keys(options).length <= 2) return alert("You should have at least 2 options!");
+        document.getElementById("option" + option).remove();
+        delete options[option];
+    }
+</script>
+<style>
+    * {
+        font-family: Calibri,serif;
+    }
+</style>
+</body>
+</html>
